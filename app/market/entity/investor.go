@@ -56,5 +56,7 @@ func (investor *Investor) UpdateAssetPosition(assetId string, shares int) {
 
 	if assetPosition == nil {
 		investor.asset_positions = append(investor.asset_positions, NewInvestorAssetPosition(assetId, shares))
+	} else {
+		assetPosition.shares += shares
 	}
 }
