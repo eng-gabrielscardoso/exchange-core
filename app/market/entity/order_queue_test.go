@@ -39,7 +39,7 @@ func TestLess(t *testing.T) {
 		orderQueue.Push(order)
 	}
 
-	if orderQueue.orders == nil {
+	if orderQueue.Orders == nil {
 		t.Errorf("Expected pushed orders to queue but nothing was sent.")
 	}
 
@@ -61,7 +61,7 @@ func TestSwap(t *testing.T) {
 
 	orderQueue.Swap(0, 4)
 
-	if orderQueue.orders[0].price != orders[4].price || orderQueue.orders[4].price != orders[0].price {
+	if orderQueue.Orders[0].Price != orders[4].Price || orderQueue.Orders[4].Price != orders[0].Price {
 		t.Error("Expected orders to be swapped, but they were not")
 	}
 }
@@ -81,7 +81,7 @@ func TestPop(t *testing.T) {
 
 	lastOrder := orders[len(orders)-1]
 
-	if poppedOrder.price != lastOrder.price {
+	if poppedOrder.Price != lastOrder.Price {
 		t.Error("Expected popped order to be the last order, but it was not")
 	}
 

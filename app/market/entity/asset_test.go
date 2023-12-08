@@ -9,16 +9,16 @@ func TestNewAsset(t *testing.T) {
 
 	asset := NewAsset(id, name, volume)
 
-	if asset.id != id {
-		t.Errorf("Expected: %s, Received: %s", id, asset.id)
+	if asset.ID != id {
+		t.Errorf("Expected: %s, Received: %s", id, asset.ID)
 	}
 
-	if asset.name != name {
-		t.Errorf("Expected: %s, Received: %s", name, asset.name)
+	if asset.Name != name {
+		t.Errorf("Expected: %s, Received: %s", name, asset.Name)
 	}
 
-	if asset.market_volume != volume {
-		t.Errorf("Expected: %d, Received: %d", volume, asset.market_volume)
+	if asset.MarketVolume != volume {
+		t.Errorf("Expected: %d, Received: %d", volume, asset.MarketVolume)
 	}
 }
 

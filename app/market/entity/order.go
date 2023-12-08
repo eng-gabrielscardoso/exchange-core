@@ -26,62 +26,62 @@ const (
 )
 
 type Order struct {
-	id             string
-	investor       *Investor
-	asset          *Asset
-	shares         int
-	pending_shares int
-	price          float64
-	order_type     OrderType
-	status         OrderStatus
-	transactions   []*Transaction
+	ID            string
+	Investor      *Investor
+	Asset         *Asset
+	Shares        int
+	PendingShares int
+	Price         float64
+	OrderType     OrderType
+	Status        OrderStatus
+	Transactions  []*Transaction
 }
 
 // CONSTRUCTORS
 
 func NewOrder(orderId string, investor *Investor, asset *Asset, shares int, price float64, orderType OrderType) *Order {
 	return &Order{
-		id:           orderId,
-		investor:     investor,
-		asset:        asset,
-		shares:       shares,
-		price:        price,
-		order_type:   orderType,
-		status:       StatusOpen,
-		transactions: []*Transaction{},
+		ID:           orderId,
+		Investor:     investor,
+		Asset:        asset,
+		Shares:       shares,
+		Price:        price,
+		OrderType:    orderType,
+		Status:       StatusOpen,
+		Transactions: []*Transaction{},
 	}
 }
 
 // GETTERS AND SETTERS
 
 func (order *Order) GetInvestor() *Investor {
-	return order.investor
+	return order.Investor
 }
 
 func (order *Order) GetAsset() *Asset {
-	return order.asset
+	return order.Asset
 }
 
 func (order *Order) GetShares() int {
-	return order.shares
+	return order.Shares
 }
 
 func (order *Order) GetPendingShares() int {
-	return order.pending_shares
+	return order.PendingShares
 }
 
 func (order *Order) GetPrice() float64 {
-	return order.price
+	return order.Price
 }
 
 func (order *Order) GetOrderType() OrderType {
-	return order.order_type
+	return order.OrderType
 }
 
 func (order *Order) GetStatus() OrderStatus {
-	return order.status
+	return order.Status
 }
 
 func (order *Order) GetTransactions() []*Transaction {
-	return order.transactions
+	return order.Transactions
 }

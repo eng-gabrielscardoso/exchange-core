@@ -3,7 +3,7 @@ package entity
 // STRUCT DECLARATIONS
 
 type OrderQueue struct {
-	orders []*Order
+	Orders []*Order
 }
 
 // CONSTRUCTOR
@@ -15,25 +15,25 @@ func NewOrderQueue() *OrderQueue {
 // METHODS
 
 func (orderQueue *OrderQueue) Less(i, j int) bool {
-	return orderQueue.orders[i].price < orderQueue.orders[j].price
+	return orderQueue.Orders[i].Price < orderQueue.Orders[j].Price
 }
 
 func (orderQueue *OrderQueue) Swap(i, j int) {
-	orderQueue.orders[i], orderQueue.orders[j] = orderQueue.orders[j], orderQueue.orders[i]
+	orderQueue.Orders[i], orderQueue.Orders[j] = orderQueue.Orders[j], orderQueue.Orders[i]
 }
 
 func (orderQueue *OrderQueue) Len() int {
-	return len(orderQueue.orders)
+	return len(orderQueue.Orders)
 }
 
 func (orderQueue *OrderQueue) Push(x any) {
-	orderQueue.orders = append(orderQueue.orders, x.(*Order))
+	orderQueue.Orders = append(orderQueue.Orders, x.(*Order))
 }
 
 func (orderQueue *OrderQueue) Pop() any {
-	oldOrders := orderQueue.orders
+	oldOrders := orderQueue.Orders
 	n := len(oldOrders)
 	item := oldOrders[n-1]
-	orderQueue.orders = oldOrders[0 : n-1]
+	orderQueue.Orders = oldOrders[0 : n-1]
 	return item
 }

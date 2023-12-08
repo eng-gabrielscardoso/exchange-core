@@ -9,59 +9,59 @@ import (
 // STRUCT DECLARATIONS
 
 type Transaction struct {
-	id            string
-	buying_order  *Order
-	selling_order *Order
-	shares        int
-	price         float64
-	total_amount  float64
-	datetime      time.Time
+	ID           string
+	BuyingOrder  *Order
+	SellingOrder *Order
+	Shares       int
+	Price        float64
+	TotalAmount  float64
+	Datetime     time.Time
 }
 
 // CONSTRUCTOR
 
-func NewTransaction(buyingOrder *Order, sellingOrder *Order, shares int, price float64) *Transaction {
-	total := float64(shares) * price
+func NewTransaction(buyingOrder *Order, sellingOrder *Order, Shares int, price float64) *Transaction {
+	total := float64(Shares) * price
 
 	return &Transaction{
-		id:            uuid.New().String(),
-		buying_order:  buyingOrder,
-		selling_order: sellingOrder,
-		shares:        shares,
-		price:         price,
-		total_amount:  total,
-		datetime:      time.Now(),
+		ID:           uuid.New().String(),
+		BuyingOrder:  buyingOrder,
+		SellingOrder: sellingOrder,
+		Shares:       Shares,
+		Price:        price,
+		TotalAmount:  total,
+		Datetime:     time.Now(),
 	}
 }
 
 // GETTERS AND SETTERS
 
 func (transaction *Transaction) GetBuyingOrder() *Order {
-	return transaction.buying_order
+	return transaction.BuyingOrder
 }
 
 func (transaction *Transaction) GetSellingOrder() *Order {
-	return transaction.selling_order
+	return transaction.SellingOrder
 }
 
 func (transaction *Transaction) GetShares() int {
-	return transaction.shares
+	return transaction.Shares
 }
 
 func (transaction *Transaction) GetPrice() float64 {
-	return transaction.price
+	return transaction.Price
 }
 
 func (transaction *Transaction) GetTotalAmount() float64 {
-	return transaction.total_amount
+	return transaction.TotalAmount
 }
 
 func (transaction *Transaction) GetDatetime() time.Time {
-	return transaction.datetime
+	return transaction.Datetime
 }
 
 // METHODS
 
-func (transaction *Transaction) CalculateTotalAmount(shares int, price float64) {
-	transaction.total_amount = float64(shares) * price
+func (transaction *Transaction) CalculateTotalAmount(Shares int, price float64) {
+	transaction.TotalAmount = float64(Shares) * price
 }

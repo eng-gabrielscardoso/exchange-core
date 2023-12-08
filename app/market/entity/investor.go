@@ -3,41 +3,41 @@ package entity
 // STRUCT DECLARATIONS
 
 type InvestorAssetPosition struct {
-	id     string
-	shares int
+	ID     string
+	Shares int
 }
 
 type Investor struct {
-	id              string
-	name            string
-	asset_positions []*InvestorAssetPosition
+	ID             string
+	Name           string
+	AssetPositions []*InvestorAssetPosition
 }
 
 // CONSTRUCTORS
 
 func NewInvestor(id string) *Investor {
 	return &Investor{
-		id:              id,
-		asset_positions: []*InvestorAssetPosition{},
+		ID:             id,
+		AssetPositions: []*InvestorAssetPosition{},
 	}
 }
 
 func NewInvestorAssetPosition(assetId string, shares int) *InvestorAssetPosition {
 	return &InvestorAssetPosition{
-		id:     assetId,
-		shares: shares,
+		ID:     assetId,
+		Shares: shares,
 	}
 }
 
 // GETTERS AND SETTERS
 
 func (investor *Investor) GetInvestorName() string {
-	return investor.name
+	return investor.Name
 }
 
 func (investor *Investor) GetAssetPosition(assetId string) *InvestorAssetPosition {
-	for _, assetPosition := range investor.asset_positions {
-		if assetPosition.id == assetId {
+	for _, assetPosition := range investor.AssetPositions {
+		if assetPosition.ID == assetId {
 			return assetPosition
 		}
 	}
@@ -48,15 +48,15 @@ func (investor *Investor) GetAssetPosition(assetId string) *InvestorAssetPositio
 // METHODS
 
 func (investor *Investor) AddAssetPosition(assetPosition *InvestorAssetPosition) {
-	investor.asset_positions = append(investor.asset_positions, assetPosition)
+	investor.AssetPositions = append(investor.AssetPositions, assetPosition)
 }
 
 func (investor *Investor) UpdateAssetPosition(assetId string, shares int) {
 	assetPosition := investor.GetAssetPosition(assetId)
 
 	if assetPosition == nil {
-		investor.asset_positions = append(investor.asset_positions, NewInvestorAssetPosition(assetId, shares))
+		investor.AssetPositions = append(investor.AssetPositions, NewInvestorAssetPosition(assetId, shares))
 	} else {
-		assetPosition.shares += shares
+		assetPosition.Shares += shares
 	}
 }
