@@ -17,7 +17,7 @@ type Book struct {
 
 // CONSTRUCTOR
 
-func NewBoo(inputChannel chan *Order, outputChannel chan *Order, waitGroup *sync.WaitGroup) *Book {
+func NewBook(inputChannel chan *Order, outputChannel chan *Order, waitGroup *sync.WaitGroup) *Book {
 	return &Book{
 		orders:        []*Order{},
 		transactions:  []*Transaction{},
