@@ -1,29 +1,15 @@
 package entity
 
-// STRUCT DECLARATIONS
-
 type Asset struct {
 	ID           string
 	Name         string
 	MarketVolume int
 }
 
-// CONSTRUCTORS
-
-func NewAsset(ID string, Name string, volume int) *Asset {
+func NewAsset(id string, name string, marketVolume int) *Asset {
 	return &Asset{
-		ID:           ID,
-		Name:         Name,
-		MarketVolume: volume,
+		ID:           id,
+		Name:         name,
+		MarketVolume: marketVolume,
 	}
-}
-
-// GETTERS AND SETTERS
-
-func (asset *Asset) GetName() string {
-	return asset.Name
-}
-
-func (asset *Asset) GetMarketVolume() int {
-	return asset.MarketVolume
 }

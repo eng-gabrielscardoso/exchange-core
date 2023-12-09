@@ -1,10 +1,8 @@
 package entity
 
-// STRUCT DECLARATIONS
-
 type InvestorAssetPosition struct {
-	ID     string
-	Shares int
+	AssetID string
+	Shares  int
 }
 
 type Investor struct {
@@ -13,12 +11,10 @@ type Investor struct {
 	AssetPosition []*InvestorAssetPosition
 }
 
-// CONSTRUCTORS
-
-func NewInvestorAssetPosition(assetId string, shares int) *InvestorAssetPosition {
+func NewInvestorAssetPosition(assetID string, shares int) *InvestorAssetPosition {
 	return &InvestorAssetPosition{
-		ID:     assetId,
-		Shares: shares,
+		AssetID: assetID,
+		Shares:  shares,
 	}
 }
 
@@ -29,34 +25,24 @@ func NewInvestor(id string) *Investor {
 	}
 }
 
-// GETTERS AND SETTERS
-
-func (investor *Investor) GetInvestorName() string {
-	return investor.Name
-}
-
-func (investor *Investor) GetAssetPosition(assetId string) *InvestorAssetPosition {
-	for _, assetPosition := range investor.AssetPosition {
-		if assetPosition.ID == assetId {
+func (i *Investor) GetAssetPosition(assetID string) *InvestorAssetPosition {
+	for _, assetPosition := range i.AssetPosition {
+		if assetPosition.AssetID == assetID {
 			return assetPosition
 		}
 	}
-
 	return nil
 }
 
-// METHODS
-
-func (investor *Investor) AddAssetPosition(assetPosition *InvestorAssetPosition) {
-	investor.AssetPosition = append(investor.AssetPosition, assetPosition)
+func (i *Investor) AddAssetPosition(assetPosition *InvestorAssetPosition) {
+	i.AssetPosition = append(i.AssetPosition, assetPosition)
 }
 
-func (investor *Investor) UpdateAssetPosition(assetId string, shares int) {
-	assetPosition := investor.GetAssetPosition(assetId)
-
+func (i *Investor) UpdateAssetPosition(assetID string, qtdShares int) {
+	assetPosition := i.GetAssetPosition(assetID)
 	if assetPosition == nil {
-		investor.AssetPosition = append(investor.AssetPosition, NewInvestorAssetPosition(assetId, shares))
+		i.AssetPosition = append(i.AssetPosition, NewInvestorAssetPosition(assetID, qtdShares))
 	} else {
-		assetPosition.Shares += shares
+		assetPosition.Shares += qtdShares
 	}
 }
