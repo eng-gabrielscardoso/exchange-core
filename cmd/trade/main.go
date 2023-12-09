@@ -40,7 +40,7 @@ func main() {
 		for message := range kafkaMessageChannel {
 			waitGroup.Add(1)
 
-			fmt.Println(message.Value)
+			fmt.Println(string(message.Value))
 
 			tradeInput := dto.TradeInput{}
 			error := json.Unmarshal(message.Value, &tradeInput)
@@ -59,6 +59,8 @@ func main() {
 		output := transformer.TransformOutput(result)
 
 		outputJson, error := json.MarshalIndent(output, "", " ")
+
+		fmt.Println(string(outputJson))
 
 		if error != nil {
 			panic(error)
