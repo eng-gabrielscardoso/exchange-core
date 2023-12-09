@@ -19,34 +19,35 @@ func main() {
 
 	defer waitGroup.Wait()
 
-	kafkaMessageChannel := make(chan *ckafka.Message)
+	kafkaMsgChan := make(chan *ckafka.Message)
 
 	configMap := &ckafka.ConfigMap{
 		"bootstrap.servers": "host.docker.internal:9094",
-		"group.id":          "mygroup",
-		"auto.offset.reset": "earliest",
+		"group.id":          "myGroup",
+		"auto.offset.reset": "latest",
 	}
 
 	producer := kafka.NewKafkaProducer(configMap)
 	kafka := kafka.NewKafkaConsumer(configMap, []string{"input"})
 
-	go kafka.Consume(kafkaMessageChannel)
+	go kafka.Consume(kafkaMsgChan)
 
 	book := entity.NewBook(ordersIn, ordersOut, waitGroup)
 
 	go book.Trade()
 
 	go func() {
-		for message := range kafkaMessageChannel {
+		for msg := range kafkaMsgChan {
 			waitGroup.Add(1)
 
-			fmt.Println(string(message.Value))
+			fmt.Println(string(msg.Value))
 
 			tradeInput := dto.TradeInput{}
-			error := json.Unmarshal(message.Value, &tradeInput)
 
-			if error != nil {
-				panic(error)
+			err := json.Unmarshal(msg.Value, &tradeInput)
+
+			if err != nil {
+				panic(err)
 			}
 
 			order := transformer.TransformInput(tradeInput)
@@ -55,15 +56,15 @@ func main() {
 		}
 	}()
 
-	for result := range ordersOut {
-		output := transformer.TransformOutput(result)
+	for res := range ordersOut {
+		output := transformer.TransformOutput(res)
 
-		outputJson, error := json.MarshalIndent(output, "", " ")
+		outputJson, err := json.MarshalIndent(output, "", "  ")
 
 		fmt.Println(string(outputJson))
 
-		if error != nil {
-			panic(error)
+		if err != nil {
+			fmt.Println(err)
 		}
 
 		producer.Publish(outputJson, []byte("orders"), "output")
