@@ -33,9 +33,9 @@ func TestBuyAsset(t *testing.T) {
 	waitGroup.Wait()
 
 	assert := assert.New(t)
-	assert.Equal(StatusFinished, order.Status, "Order 1 should be closed")
+	assert.Equal(StatusFinished, order.Status, "Order 1 should be finished")
 	assert.Equal(0, order.PendingShares, "Order 1 should have 0 PendingShares")
-	assert.Equal(StatusFinished, order2.Status, "Order 2 should be closed")
+	assert.Equal(StatusFinished, order2.Status, "Order 2 should be finished")
 	assert.Equal(0, order2.PendingShares, "Order 2 should have 0 PendingShares")
 
 	assert.Equal(5, investorAssetPosition.Shares, "Investor 1 should have 5 shares of asset 1")
@@ -70,9 +70,9 @@ func TestBuyAssetWithDifferentAssents(t *testing.T) {
 	inputChannel <- order2
 
 	assert := assert.New(t)
-	assert.Equal(StatusOpen, order.Status, "Order 1 should be closed")
+	assert.Equal(StatusOpen, order.Status, "Order 1 should be finished")
 	assert.Equal(5, order.PendingShares, "Order 1 should have 5 PendingShares")
-	assert.Equal(StatusOpen, order2.Status, "Order 2 should be closed")
+	assert.Equal(StatusOpen, order2.Status, "Order 2 should be finished")
 	assert.Equal(5, order2.PendingShares, "Order 2 should have 5 PendingShares")
 }
 
@@ -113,10 +113,10 @@ func TestBuyPartialAsset(t *testing.T) {
 
 	waitGroup.Wait()
 
-	assert.Equal(StatusFinished, order.Status, "Order 1 should be closed")
+	assert.Equal(StatusFinished, order.Status, "Order 1 should be finished")
 	assert.Equal(0, order.PendingShares, "Order 1 should have 0 PendingShares")
 
-	assert.Equal(StatusOpen, order2.Status, "Order 2 should be OPEN")
+	assert.Equal(StatusOpen, order2.Status, "Order 2 should be open")
 	assert.Equal(2, order2.PendingShares, "Order 2 should have 2 PendingShares")
 
 	assert.Equal(0, investorAssetPosition.Shares, "Investor 1 should have 0 shares of asset 1")
@@ -127,10 +127,10 @@ func TestBuyPartialAsset(t *testing.T) {
 	inputChannel <- order3
 	waitGroup.Wait()
 
-	assert.Equal(StatusFinished, order3.Status, "Order 3 should be closed")
+	assert.Equal(StatusFinished, order3.Status, "Order 3 should be finished")
 	assert.Equal(0, order3.PendingShares, "Order 3 should have 0 PendingShares")
 
-	assert.Equal(StatusFinished, order2.Status, "Order 2 should be CLOSED")
+	assert.Equal(StatusFinished, order2.Status, "Order 2 should be finished")
 	assert.Equal(0, order2.PendingShares, "Order 2 should have 0 PendingShares")
 
 	assert.Equal(2, len(book.Transactions), "Should have 2 transactions")
@@ -175,10 +175,10 @@ func TestBuyWithDifferentPrice(t *testing.T) {
 	waitGroup.Wait()
 
 	assert := assert.New(t)
-	assert.Equal(StatusFinished, order.Status, "Order 1 should be closed")
+	assert.Equal(StatusFinished, order.Status, "Order 1 should be finished")
 	assert.Equal(0, order.PendingShares, "Order 1 should have 0 PendingShares")
 
-	assert.Equal(StatusOpen, order2.Status, "Order 2 should be OPEN")
+	assert.Equal(StatusOpen, order2.Status, "Order 2 should be open")
 	assert.Equal(2, order2.PendingShares, "Order 2 should have 2 PendingShares")
 
 	assert.Equal(0, investorAssetPosition.Shares, "Investor 1 should have 0 shares of asset 1")
@@ -193,7 +193,7 @@ func TestBuyWithDifferentPrice(t *testing.T) {
 	assert.Equal(StatusOpen, order3.Status, "Order 3 should be open")
 	assert.Equal(1, order3.PendingShares, "Order 3 should have 1 PendingShares")
 
-	assert.Equal(StatusFinished, order2.Status, "Order 2 should be CLOSED")
+	assert.Equal(StatusFinished, order2.Status, "Order 2 should be finished")
 	assert.Equal(0, order2.PendingShares, "Order 2 should have 0 PendingShares")
 }
 
@@ -203,10 +203,11 @@ func TestNoMatch(t *testing.T) {
 	investor := NewInvestor("1")
 	investor2 := NewInvestor("2")
 
-	investorAssetPosition := NewInvestorAssetPosition(asset1.ID, 3)
+	investorAssetPosition := NewInvestorAssetPosition("asset1", 3)
 	investor.AddAssetPosition(investorAssetPosition)
 
 	waitGroup := sync.WaitGroup{}
+
 	inputChannel := make(chan *Order)
 
 	outputChannel := make(chan *Order)
@@ -230,8 +231,8 @@ func TestNoMatch(t *testing.T) {
 	waitGroup.Wait()
 
 	assert := assert.New(t)
-	assert.Equal(StatusOpen, order.Status, "Order 1 should be closed")
-	assert.Equal(StatusOpen, order2.Status, "Order 2 should be OPEN")
+	assert.Equal(StatusOpen, order.Status, "Order 1 should be finished")
+	assert.Equal(StatusOpen, order2.Status, "Order 2 should be open")
 	assert.Equal(3, order.PendingShares, "Order 1 should have 3 PendingShares")
 	assert.Equal(5, order2.PendingShares, "Order 2 should have 5 PendingShares")
 }

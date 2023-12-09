@@ -26,14 +26,14 @@ func (orderQueue *OrderQueue) Len() int {
 	return len(orderQueue.Orders)
 }
 
-func (orderQueue *OrderQueue) Push(x any) {
+func (orderQueue *OrderQueue) Push(x interface{}) {
 	orderQueue.Orders = append(orderQueue.Orders, x.(*Order))
 }
 
-func (orderQueue *OrderQueue) Pop() any {
-	oldOrders := orderQueue.Orders
-	n := len(oldOrders)
-	item := oldOrders[n-1]
-	orderQueue.Orders = oldOrders[0 : n-1]
+func (orderQueue *OrderQueue) Pop() interface{} {
+	oldQueue := orderQueue.Orders
+	n := len(oldQueue)
+	item := oldQueue[n-1]
+	orderQueue.Orders = oldQueue[0 : n-1]
 	return item
 }

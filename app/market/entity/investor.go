@@ -8,24 +8,24 @@ type InvestorAssetPosition struct {
 }
 
 type Investor struct {
-	ID             string
-	Name           string
-	AssetPositions []*InvestorAssetPosition
+	ID            string
+	Name          string
+	AssetPosition []*InvestorAssetPosition
 }
 
 // CONSTRUCTORS
-
-func NewInvestor(id string) *Investor {
-	return &Investor{
-		ID:             id,
-		AssetPositions: []*InvestorAssetPosition{},
-	}
-}
 
 func NewInvestorAssetPosition(assetId string, shares int) *InvestorAssetPosition {
 	return &InvestorAssetPosition{
 		ID:     assetId,
 		Shares: shares,
+	}
+}
+
+func NewInvestor(id string) *Investor {
+	return &Investor{
+		ID:            id,
+		AssetPosition: []*InvestorAssetPosition{},
 	}
 }
 
@@ -36,7 +36,7 @@ func (investor *Investor) GetInvestorName() string {
 }
 
 func (investor *Investor) GetAssetPosition(assetId string) *InvestorAssetPosition {
-	for _, assetPosition := range investor.AssetPositions {
+	for _, assetPosition := range investor.AssetPosition {
 		if assetPosition.ID == assetId {
 			return assetPosition
 		}
@@ -48,14 +48,14 @@ func (investor *Investor) GetAssetPosition(assetId string) *InvestorAssetPositio
 // METHODS
 
 func (investor *Investor) AddAssetPosition(assetPosition *InvestorAssetPosition) {
-	investor.AssetPositions = append(investor.AssetPositions, assetPosition)
+	investor.AssetPosition = append(investor.AssetPosition, assetPosition)
 }
 
 func (investor *Investor) UpdateAssetPosition(assetId string, shares int) {
 	assetPosition := investor.GetAssetPosition(assetId)
 
 	if assetPosition == nil {
-		investor.AssetPositions = append(investor.AssetPositions, NewInvestorAssetPosition(assetId, shares))
+		investor.AssetPosition = append(investor.AssetPosition, NewInvestorAssetPosition(assetId, shares))
 	} else {
 		assetPosition.Shares += shares
 	}

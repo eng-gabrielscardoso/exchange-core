@@ -18,7 +18,7 @@ func TestNewInvestor(t *testing.T) {
 		t.Errorf("Expected id to be %s, but got %s", id, investor.ID)
 	}
 
-	if len(investor.AssetPositions) != 0 {
+	if len(investor.AssetPosition) != 0 {
 		t.Error("Expected no asset positions initially, but got some")
 	}
 }
@@ -32,14 +32,14 @@ func TestInvestorMethods(t *testing.T) {
 	assetPosition := NewInvestorAssetPosition(assetId, shares)
 	investor.AddAssetPosition(assetPosition)
 
-	if len(investor.AssetPositions) != 1 {
+	if len(investor.AssetPosition) != 1 {
 		t.Error("Expected one asset position after adding, but got a different count")
 	}
 
 	newShares := 150
 	investor.UpdateAssetPosition(assetId, newShares)
 
-	if len(investor.AssetPositions) != 1 {
+	if len(investor.AssetPosition) != 1 {
 		t.Error("Expected one asset position after updating, but got a different count")
 	}
 
@@ -56,7 +56,7 @@ func TestInvestorMethods(t *testing.T) {
 	newAssetId := "XYZ"
 	investor.UpdateAssetPosition(newAssetId, 200)
 
-	if len(investor.AssetPositions) != 2 {
+	if len(investor.AssetPosition) != 2 {
 		t.Error("Expected two asset positions after updating with a new asset, but got a different count")
 	}
 

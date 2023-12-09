@@ -10,8 +10,8 @@ import (
 
 type Transaction struct {
 	ID           string
-	BuyingOrder  *Order
 	SellingOrder *Order
+	BuyingOrder  *Order
 	Shares       int
 	Price        float64
 	TotalAmount  float64
@@ -20,13 +20,13 @@ type Transaction struct {
 
 // CONSTRUCTOR
 
-func NewTransaction(buyingOrder *Order, sellingOrder *Order, Shares int, price float64) *Transaction {
+func NewTransaction(sellingOrder *Order, buyingOrder *Order, Shares int, price float64) *Transaction {
 	total := float64(Shares) * price
 
 	return &Transaction{
 		ID:           uuid.New().String(),
-		BuyingOrder:  buyingOrder,
 		SellingOrder: sellingOrder,
+		BuyingOrder:  buyingOrder,
 		Shares:       Shares,
 		Price:        price,
 		TotalAmount:  total,
@@ -62,6 +62,26 @@ func (transaction *Transaction) GetDatetime() time.Time {
 
 // METHODS
 
-func (transaction *Transaction) CalculateTotalAmount(Shares int, price float64) {
-	transaction.TotalAmount = float64(Shares) * price
+func (transaction *Transaction) CalculateTotalAmount(shares int, price float64) {
+	transaction.TotalAmount = float64(shares) * price
+}
+
+func (transaction *Transaction) FinishBuyOrder() {
+	if transaction.BuyingOrder.PendingShares == 0 {
+		transaction.BuyingOrder.Status = StatusFinished
+	}
+}
+
+func (transaction *Transaction) FinishSellOrder() {
+	if transaction.SellingOrder.PendingShares == 0 {
+		transaction.SellingOrder.Status = StatusFinished
+	}
+}
+
+func (transaction *Transaction) AddBuyOrderPendingShares(shares int) {
+	transaction.BuyingOrder.PendingShares += shares
+}
+
+func (transaction *Transaction) AddSellOrderPendingShares(shares int) {
+	transaction.SellingOrder.PendingShares += shares
 }

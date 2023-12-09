@@ -64,23 +64,14 @@ func (book *Book) AddTransaction(transaction *Transaction, waitGroup *sync.WaitG
 	}
 
 	transaction.SellingOrder.Investor.UpdateAssetPosition(transaction.SellingOrder.Asset.ID, -minShares)
-	transaction.SellingOrder.PendingShares -= minShares
+	transaction.AddSellOrderPendingShares(-minShares)
+
 	transaction.BuyingOrder.Investor.UpdateAssetPosition(transaction.BuyingOrder.Asset.ID, minShares)
-	transaction.BuyingOrder.PendingShares -= minShares
+	transaction.AddBuyOrderPendingShares(-minShares)
 
 	transaction.CalculateTotalAmount(transaction.Shares, transaction.BuyingOrder.Price)
-
-	if transaction.BuyingOrder.PendingShares == 0 {
-		transaction.BuyingOrder.Status = StatusFinished
-	} else {
-		transaction.BuyingOrder.Status = StatusPartiallyFilled
-	}
-
-	if transaction.SellingOrder.PendingShares == 0 {
-		transaction.SellingOrder.Status = StatusFinished
-	} else {
-		transaction.SellingOrder.Status = StatusPartiallyFilled
-	}
+	transaction.FinishSellOrder()
+	transaction.FinishBuyOrder()
 
 	book.Transactions = append(book.Transactions, transaction)
 }
@@ -109,7 +100,7 @@ func (book *Book) Trade() {
 				sellOrder := sellOrders[asset].Pop().(*Order)
 
 				if sellOrder.PendingShares > 0 {
-					transaction := NewTransaction(sellOrder, order, order.Shares, order.Price)
+					transaction := NewTransaction(sellOrder, order, order.Shares, sellOrder.Price)
 
 					book.AddTransaction(transaction, book.WaitGroup)
 
@@ -142,7 +133,7 @@ func (book *Book) Trade() {
 					book.OrdersOutput <- order
 
 					if buyOrder.PendingShares > 0 {
-						sellOrders[asset].Push(buyOrder)
+						buyOrders[asset].Push(buyOrder)
 					}
 				}
 			}
