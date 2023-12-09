@@ -1,8 +1,8 @@
 package entity
 
 type InvestorAssetPosition struct {
-	AssetID string
-	Shares  int
+	ID     string
+	Shares int
 }
 
 type Investor struct {
@@ -13,8 +13,8 @@ type Investor struct {
 
 func NewInvestorAssetPosition(assetID string, shares int) *InvestorAssetPosition {
 	return &InvestorAssetPosition{
-		AssetID: assetID,
-		Shares:  shares,
+		ID:     assetID,
+		Shares: shares,
 	}
 }
 
@@ -27,7 +27,7 @@ func NewInvestor(id string) *Investor {
 
 func (i *Investor) GetAssetPosition(assetID string) *InvestorAssetPosition {
 	for _, assetPosition := range i.AssetPosition {
-		if assetPosition.AssetID == assetID {
+		if assetPosition.ID == assetID {
 			return assetPosition
 		}
 	}

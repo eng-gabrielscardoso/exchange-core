@@ -1,8 +1,18 @@
 package entity
 
+// TYPE DECLARATIONS
+
 type OrderQueue struct {
 	Orders []*Order
 }
+
+// CONSTRUCTOR
+
+func NewOrderQueue() *OrderQueue {
+	return &OrderQueue{}
+}
+
+// METHODS
 
 func (oq *OrderQueue) Less(i, j int) bool {
 	return oq.Orders[i].Price < oq.Orders[j].Price
@@ -26,8 +36,4 @@ func (oq *OrderQueue) Pop() interface{} {
 	item := old[n-1]
 	oq.Orders = old[0 : n-1]
 	return item
-}
-
-func NewOrderQueue() *OrderQueue {
-	return &OrderQueue{}
 }
